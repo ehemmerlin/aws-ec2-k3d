@@ -1,0 +1,21 @@
+[{
+    "ParameterKey": "AmiId",
+    "ParameterValue": "ami-0fc61db8544a617ed"
+  },
+  {
+    "ParameterKey": "InstanceType",
+    "ParameterValue": "t2.small"
+  },
+  {
+    "ParameterKey": "KeyPairName",
+    "ParameterValue": "MyKeyPair"
+  },
+  {
+    "ParameterKey": "PemKeyFileUrl",
+    "ParameterValue": "key.pem"
+  },
+  {
+    "ParameterKey": "UserData",
+    "ParameterValue": "sudo yum update -y\nsudo yum install docker -y\nsudo service docker start\nsudo usermod -a -G docker ec2-user\nsudo curl -L \"https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)\" -o /usr/local/bin/docker-compose\nsudo chmod +x /usr/local/bin/docker-compose\nsudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose\nsudo yum install git -y\nwget -q -O - https://raw.githubusercontent.com/rancher/k3d/main/install.sh | bash\ncurl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl\nchmod +x ./kubectl\nsudo mv ./kubectl /usr/local/bin/kubectl"
+  }
+]

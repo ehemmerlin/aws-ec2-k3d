@@ -1,0 +1,87 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: AWS K3D
+Parameters:
+  InstanceType:
+    Description: EC2 instance type on which K3D runs
+    Type:        String
+    Default:     t2.micro
+  KeyPairName:
+    Type: String
+  AmiId:
+    Type: String
+  PemKeyFileUrl:
+    Type: String
+  UserData:
+    Type: String
+    Default: ""    
+Resources:
+  EC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: !Ref InstanceType
+      SecurityGroups: [!Ref InstanceSecurityGroup]
+      KeyName: !Ref KeyPairName
+      ImageId: !Ref AmiId
+      UserData:
+        Fn::Base64:
+          !Sub
+            - |
+               #!/bin/bash -x
+                ${UserData}
+                /opt/aws/bin/cfn-signal -e 0 --stack ${StackName} -r "EC2Instance" --region ${Region} ${WaitHandleHash}
+            -   
+              WaitHandleHash:
+                  Fn::Base64: !Ref WaitHandle
+              StackName: !Ref AWS::StackName
+              Region: !Ref AWS::Region
+              UserData: !Ref UserData
+                   
+  InstanceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Enable SSH access via port 22 and TCP access via ports 80, 8000, 8080
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: "0.0.0.0/0" 
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: "0.0.0.0/0"    
+        - IpProtocol: tcp
+          FromPort: 8000
+          ToPort: 8000
+          CidrIp: "0.0.0.0/0"
+        - IpProtocol: tcp
+          FromPort: 8080
+          ToPort: 8080
+          CidrIp: "0.0.0.0/0"
+
+  WaitHandle: 
+    Type: AWS::CloudFormation::WaitConditionHandle
+  WaitCondition: 
+    Type: AWS::CloudFormation::WaitCondition
+    DependsOn: "EC2Instance"
+    Properties: 
+      Handle: 
+        Ref: "WaitHandle"
+      Timeout: "300"
+      Count: 1      
+
+Outputs:
+  InstanceId:
+    Description: InstanceId of the newly created EC2 instance
+    Value: !Ref EC2Instance
+  AZ:
+    Description: Availability Zone of the newly created EC2 instance
+    Value: !GetAtt [EC2Instance, AvailabilityZone]
+  PublicDNS:
+    Description: Public DNSName of the newly created EC2 instance
+    Value: !GetAtt [EC2Instance, PublicDnsName]
+  PublicIP:
+    Description: Public IP address of the newly created EC2 instance
+    Value: !GetAtt [EC2Instance, PublicIp]
+  PemKeyFileUrl:
+    Value: !Sub '${PemKeyFileUrl}'
+          
