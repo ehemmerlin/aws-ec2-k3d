@@ -143,6 +143,14 @@ To get rid of everything we created so far, type:
 Successufly removed the EC2 stack and the key pair 🎉
 ```
 
+## Troubleshoot
+If you get one of the following errors, renew your AWS CLI credentials.
+```
+An error occurred (RequestExpired) when calling the XXX operation: Request has expired.
+An error occurred (ExpiredToken) when calling the XXX operation: The provided token has expired.
+```
+AWS Educate accounts provide temporary AWS CLI credentials: they will only last a few hours. If they expire before you finish your work, you need to get new ones from your AWS Educate portal like you did in the beginning.
+
 ## Further readings
 - To spin up a production ready cluster: [GitLab Auto DevOps on DigitalOcean Kubernetes cluster](https://erichemmerlin.medium.com/gitlab-auto-devops-on-digitalocean-kubernetes-cluster-f8b744b1e64c)
 - To learn more about Kubernetes: [Kubernetes - CKAD preparation](https://erichemmerlin.medium.com/kubernetes-ckad-preparation-65a5fffe6b9a)
