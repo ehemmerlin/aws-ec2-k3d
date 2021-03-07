@@ -28,7 +28,7 @@ For general use, the aws configure command is the fastest way to set up your AWS
 > aws configure
 AWS Access Key ID [None]: ***********************************************
 AWS Secret Access Key [None]: *******************************************
-Default region name [None]: us-west-2
+Default region name [None]: us-east-1
 Default output format [None]: json
 ```
 
