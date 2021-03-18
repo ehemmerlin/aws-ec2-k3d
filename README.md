@@ -14,7 +14,7 @@ Using AWS CLI we'll provision an EC2 Linux machine pre-installed with git, docke
 - Willing to learn some new things
 
 ## AWS CLI
-To install the latest version of the AWS CLI, use the following command block:
+To install the latest version of the AWS CLI (version 2) use the following command block:
 ```
 > curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 unzip awscliv2.zip
@@ -118,7 +118,7 @@ spec:
             port:
               number: 80
 [ec2-user@ip-xx-xx-xx-xx ~]$ kubectl apply -f ingress.yaml
-[ec2-user@ip-xx-xx-xx-xx ~]$ curl localhost:8081
+[ec2-user@ip-xx-xx-xx-xx ~]$ curl localhost:8080
 ```
 At this step Nginx's welcome page should appear as an html page.
 
